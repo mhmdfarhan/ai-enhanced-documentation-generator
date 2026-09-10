@@ -8,13 +8,27 @@
     "start": "next start"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@supabase/auth-helpers-nextjs": "^0.15.0",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.116.0",
+    "adm-zip": "^0.6.0",
+    "lucide-react": "^1.43.0",
     "next": "16.3.4",
+    "openai": "^7.12.1",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "reactflow": "^11.11.4",
+    "tree-sitter": "^0.25.1",
+    "tree-sitter-javascript": "^0.25.0",
+    "tree-sitter-python": "^0.25.0",
+    "tree-sitter-typescript": "^0.23.2",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/adm-zip": "^0.5.8",
+    "@types/node": "^20.19.43",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "tailwindcss": "^4",

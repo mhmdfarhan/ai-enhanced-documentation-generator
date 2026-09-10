@@ -1,26 +1,15 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+:root{ --background:#fafafb; --foreground:#09090b; --muted:#71717a; --border:rgba(24,24,27,.08); --card:#ffffff; --accent:#6366f1; --accent2:#8b5cf6; }
+*{ scrollbar-width:thin; scrollbar-color:#d4d4d8 transparent; }
+::-webkit-scrollbar{ width:6px; height:6px; }
+::-webkit-scrollbar-thumb{ background:#d4d4d8; border-radius:999px; }
+html{ scroll-behavior:smooth; }
+body{ background:var(--background); color:var(--foreground); font-feature-settings:"ss01","ss02"; -webkit-font-smoothing:antialiased; }
+@theme inline{ --color-background:var(--background); --color-foreground:var(--foreground); --font-sans:var(--font-geist-sans); --font-mono:var(--font-geist-mono); }
+.glass{ background:rgba(255,255,255,.72); backdrop-filter:blur(16px) saturate(180%); border:1px solid rgba(255,255,255,.6); }
+.glass-dark{ background:rgba(9,9,11,.7); backdrop-filter:blur(16px) saturate(180%); border:1px solid rgba(255,255,255,.08); }
+.grid-pattern{ background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,.06) 1px, transparent 0); background-size:24px 24px; }
+.glow{ box-shadow:0 0 0 1px rgba(99,102,241,.08), 0 4px 24px rgba(99,102,241,.12), 0 1px 2px rgba(0,0,0,.06); }
+.shimmer{ position:relative; overflow:hidden; }
+.shimmer::after{ content:""; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent); transform:translateX(-100%); animation:shimmer 2s infinite; }
+@keyframes shimmer{ 100%{ transform:translateX(100%); } }
