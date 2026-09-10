@@ -14,16 +14,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get conversation history if conversationId provided
-    let conversationHistory = [];
+    let conversationHistory: any[] = [];
     if (conversationId) {
-      const { data: messages } = await supabase
+      const { data: messages } = await (supabase as any)
         .from('ai_messages')
         .select('*')
         .eq('conversation_id', conversationId)
         .order('created_at', { ascending: true });
-      
-      conversationHistory = messages?.map(msg => ({
+      conversationHistory = (messages as any[])?.map((msg: any) => ({
         role: msg.role,
         content: msg.content,
       })) || [];
@@ -46,39 +44,34 @@ export async function POST(request: NextRequest) {
 
     // Store conversation if conversationId exists
     if (conversationId) {
-      // Store user message
-      await supabase
+      await (supabase as any)
         .from('ai_messages')
         .insert({
           conversation_id: conversationId,
           role: 'user',
           content: question,
-          context_files: relevantChunks.map(c => ({ 
+          context_files: relevantChunks.map((c: any) => ({ 
             file: c.file, 
             line: c.line,
             symbol: c.symbol 
           })),
         });
-
-      // Store AI response
-      await supabase
+      await (supabase as any)
         .from('ai_messages')
         .insert({
           conversation_id: conversationId,
           role: 'assistant',
           content: response.content,
-          context_files: response.sources.map(s => ({
+          context_files: response.sources.map((s: any) => ({
             file: s.file,
             line: s.line,
           })),
         });
-
-      // Update conversation title if first message
       if (conversationHistory.length === 0) {
         const title = question.length > 50 ? question.substring(0, 47) + '...' : question;
-        await supabase
+        await (supabase as any)
           .from('ai_conversations')
-          .update({ title })
+          .update({ title } as any)
           .eq('id', conversationId);
       }
     }

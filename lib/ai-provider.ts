@@ -38,9 +38,9 @@ export class OpenAIProvider implements AIProvider {
   constructor(apiKey: string){ this.c=new OpenAI({apiKey}) }
   async chat(m:string,msgs:ChatMessage[],o?:any){ const r=await this.c.chat.completions.create({model:m,messages:msgs as any,temperature:o?.temperature??0.3,max_tokens:o?.max_tokens??2000}); return r.choices[0]?.message?.content||'' }
 }
-export class AnthropicProvider implements AIProvider { name='anthropic'; async chat(){ throw new Error('Anthropic not configured') } }
-export class GeminiProvider implements AIProvider { name='gemini'; async chat(){ throw new Error('Gemini not configured') } }
-export class LocalLLMProvider implements AIProvider { name='local'; async chat(){ throw new Error('Local LLM not configured') } }
+export class AnthropicProvider implements AIProvider { name='anthropic'; async chat(_m:string,_msgs:ChatMessage[],_o?:any): Promise<string>{ throw new Error('Anthropic not configured') } }
+export class GeminiProvider implements AIProvider { name='gemini'; async chat(_m:string,_msgs:ChatMessage[],_o?:any): Promise<string>{ throw new Error('Gemini not configured') } }
+export class LocalLLMProvider implements AIProvider { name='local'; async chat(_m:string,_msgs:ChatMessage[],_o?:any): Promise<string>{ throw new Error('Local LLM not configured') } }
 export function getAIProvider(): AIProvider {
   const p = (process.env.AI_PROVIDER || 'openrouter').toLowerCase()
   if(p==='openai' && process.env.OPENAI_API_KEY) return new OpenAIProvider(process.env.OPENAI_API_KEY)

@@ -47,16 +47,15 @@ export default function ArchitecturePage() {
 
   const loadArchitectureData = async () => {
     try {
-      // Get project data
-      const { data: project } = await supabase
+      const { data: project } = await (supabase as any)
         .from('projects')
         .select('*')
         .eq('id', projectId)
-        .maybeSingle();
+        .maybeSingle() as { data: any };
 
       if (!project) return;
+      const p: any = project;
 
-      // Generate sample architecture nodes based on project
       const generatedNodes: ArchitectureNode[] = [
         {
           id: 'frontend',
@@ -65,7 +64,7 @@ export default function ArchitecturePage() {
           data: {
             label: 'Frontend',
             description: 'User interface layer',
-            fileCount: Math.floor(project.files_count * 0.3),
+            fileCount: Math.floor((p.files_count ?? 0) * 0.3),
           },
         },
         {
@@ -75,7 +74,7 @@ export default function ArchitecturePage() {
           data: {
             label: 'API Gateway',
             description: 'Entry point for API requests',
-            endpoints: project.api_endpoints_count,
+            endpoints: p.api_endpoints_count,
           },
         },
         {
@@ -85,7 +84,7 @@ export default function ArchitecturePage() {
           data: {
             label: 'Auth Service',
             description: 'Authentication & authorization',
-            fileCount: Math.floor(project.files_count * 0.1),
+            fileCount: Math.floor((p.files_count ?? 0) * 0.1),
           },
         },
         {
@@ -95,7 +94,7 @@ export default function ArchitecturePage() {
           data: {
             label: 'User Service',
             description: 'User management',
-            fileCount: Math.floor(project.files_count * 0.15),
+            fileCount: Math.floor((p.files_count ?? 0) * 0.15),
           },
         },
         {
@@ -105,7 +104,7 @@ export default function ArchitecturePage() {
           data: {
             label: 'Data Service',
             description: 'Business logic processing',
-            fileCount: Math.floor(project.files_count * 0.2),
+            fileCount: Math.floor((p.files_count ?? 0) * 0.2),
           },
         },
         {
@@ -152,10 +151,9 @@ export default function ArchitecturePage() {
       setNodes(generatedNodes);
       setEdges(generatedEdges);
 
-      // Set architecture pattern based on project
-      if (project.framework?.toLowerCase().includes('react') || project.framework?.toLowerCase().includes('vue')) {
+      if ((p.framework as string)?.toLowerCase().includes('react') || (p.framework as string)?.toLowerCase().includes('vue')) {
         setArchitecturePattern('Frontend-Backend Separation');
-      } else if (project.framework?.toLowerCase().includes('laravel') || project.framework?.toLowerCase().includes('spring')) {
+      } else if ((p.framework as string)?.toLowerCase().includes('laravel') || (p.framework as string)?.toLowerCase().includes('spring')) {
         setArchitecturePattern('MVC Pattern');
       } else {
         setArchitecturePattern('Layered Architecture');

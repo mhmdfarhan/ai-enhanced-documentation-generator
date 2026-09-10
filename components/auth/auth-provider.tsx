@@ -17,9 +17,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if(fetchingRef.current) return null;
       fetchingRef.current=true;
       try{
-        const {data:profile}=await supabase.from('profiles').select('*').eq('id',userId).maybeSingle();
+        const {data:profile}=await (supabase as any).from('profiles').select('*').eq('id',userId).maybeSingle();
         if(profile) return profile;
-        const {data:ins}=await supabase.from('profiles').insert({id:userId,email:email??'',full_name:meta?.full_name??''}).select().maybeSingle();
+        const {data:ins}=await (supabase as any).from('profiles').insert({id:userId,email:email??'',full_name:meta?.full_name??''}).select().maybeSingle();
         return ins??{id:userId,email:email??''};
       } finally{ fetchingRef.current=false; }
     };
@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if(mounted) setIsLoading(false);
     };
     init();
-    const {data:{subscription}}=supabase.auth.onAuthStateChange(async(_event,session)=>{
+    const {data:{subscription}}=supabase.auth.onAuthStateChange(async(_event:any,session:any)=>{
       if(!mounted) return;
       if(session?.user){
         const p:any=await fetchProfile(session.user.id,session.user.email!,session.user.user_metadata);
@@ -51,7 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const {data:authData,error:signUpError}=await supabase.auth.signUp({email,password,options:{data:{full_name:fullName}}});
     if(signUpError) throw signUpError;
     if(authData.user){
-      const {error}=await supabase.from('profiles').insert({id:authData.user.id,email,full_name:fullName});
+      const {error}=await (supabase as any).from('profiles').insert({id:authData.user.id,email,full_name:fullName});
       if(error && (error as any).code!=='23505' && !String(error.message).includes('duplicate')) console.warn(error.message);
     }
     if(!authData.session) throw new Error('Cek email untuk konfirmasi, atau matikan Email Confirmations di Supabase > Auth');

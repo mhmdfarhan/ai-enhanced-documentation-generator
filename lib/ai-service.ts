@@ -28,7 +28,7 @@ export class AIService {
     }catch(e){ console.error(e); return { content:'Sorry, error processing question.', sources:[], confidence:0 }; }
   }
   private extractSources(content:string, context:string[]): AIResponse['sources']{
-    const sources:AIResponse['sources'][]=[]; const re=/\[(\d+)\]/g; const matches=content.match(re);
+    const sources:AIResponse['sources']=[]; const re=/\[(\d+)\]/g; const matches=content.match(re);
     if(!matches) return [];
     const seen=new Set<number>();
     for(const m of matches){
